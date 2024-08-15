@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-// import MiniDrawer from "@/app/components/dashboard/faculty-dashboard/side-nav/sidenav";
+import MiniDrawer from "@/app/components/admin-dashboard/side-nav/sidenav";
 import Box from "@mui/material/Box";
 
  
@@ -27,7 +27,7 @@ const Page: React.FC = ({ params }: any) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      
+      <MiniDrawer childTitle="All Reservations" />
       <Box
         component="main"
         sx={{
