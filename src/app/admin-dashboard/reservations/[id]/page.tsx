@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import MiniDrawer from "@/app/components/admin-dashboard/side-nav/sidenav";
 import Box from "@mui/material/Box";
-import ReservationTable from "@/app/components/admin-dashboard/reservation-list/reservation-list";
-import SearchBox from "@/app/components/admin-dashboard/search-box/search-box";
+import ProfileStats from "@/app/components/admin-dashboard/profile-stats/stat";
+import AccountInformationForm from "@/app/components/admin-dashboard/account-info/account-info";
 
-const Page: React.FC = () => {
+const Page: React.FC = ({ params }: any) => {
   const [userId, setUserId] = useState<number>(0);
 
   useEffect(() => {
@@ -33,7 +33,8 @@ const Page: React.FC = () => {
           },
         }}
       >
-        <ReservationTable/>
+        <ProfileStats/>
+        <AccountInformationForm/>
       </Box>
     </Box>
   );
