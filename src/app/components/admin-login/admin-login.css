@@ -1,4 +1,22 @@
-/**.btn
-{
-    background-color: brown;
-}**/
+.topic{
+    color: var(--brown) !important;
+    font-size: 40px !important;
+    font-weight: bold !important;
+    text-align: center !important;
+    margin-top: 50px !important;
+    margin-bottom: 50px !important;
+}
+
+.form-outer{
+    background-color: var(--light-grey) !important;
+}
+
+.text-field{
+    background-color: var(--form-inner);
+}
+
+.btn{
+    color: var(--yellow) !important;
+    background-color: var(--brown) !important;
+    font-weight: bolder !important;;
+}
