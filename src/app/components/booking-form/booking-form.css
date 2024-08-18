@@ -1,0 +1,23 @@
+.topic{
+    color: var(--brown) !important;
+    font-size: 26px !important;
+    font-weight: bold !important;
+}
+
+.box-outer{
+    background-color: var(--light-grey) !important;
+}
+
+.text-field{
+    background-color: var(--form-inner) !important;
+}
+
+.labels{
+    color: var(--brown) !important;
+}
+
+.btn{
+    color: var(--yellow) !important;
+    background-color: var(--brown) !important;
+    font-weight: bolder !important;;
+}
