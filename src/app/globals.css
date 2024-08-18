@@ -1,3 +1,8 @@
-/* :root {
-
-} */
+:root {
+    --brown: #990000;
+    --light-grey: #dbdbdb;
+    --white: #ffffff;
+    --yellow: #f1ef03;
+    --text: #000000;
+    --form-inner:#e8f0fe;
+} 

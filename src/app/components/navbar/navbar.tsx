@@ -1,5 +1,7 @@
 'use client';
 import * as React from 'react';
+import Link from 'next/link';
+import './navbar.css';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,7 +18,12 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 
-const pages = ['Home', 'About', 'Facility', 'Gallery'];
+const pages = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Facility', href: '/facility' },
+  { name: 'Gallery', href: '/gallery' }
+];
 
 function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
@@ -30,15 +37,17 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className='navbar'>
       <Container maxWidth="xl">
         <Toolbar disableGutters sx={{ justifyContent: 'space-between' }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Avatar
-              alt="AudiBook Logo"
-              src="./LOGO.png"
-              sx={{ display: 'flex', mr: 1 }}
-            />
+            <Link href="/" passHref>
+              <Avatar
+                alt="AudiBook Logo"
+                src="./LOGO.png"
+                sx={{ display: 'flex', mr: 1 }}
+              />
+            </Link >
             <Typography
               variant="h6"
               noWrap
@@ -73,7 +82,7 @@ function NavBar() {
               onClose={handleCloseDrawer}
             >
               <Box
-                sx={{ width: 250, display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                sx={{ width: 250, display: 'flex', flexDirection: 'column', alignItems: 'center', backgroundColor: 'var(--brown)'}}
                 role="presentation"
                 onClick={handleCloseDrawer}
               >
@@ -86,12 +95,12 @@ function NavBar() {
                   variant="h6"
                   noWrap
                   component="a"
-                  href="#app-bar-with-responsive-menu"
+                  href="/"
                   sx={{
                     fontFamily: 'monospace',
                     fontWeight: 700,
                     letterSpacing: '.3rem',
-                    color: 'inherit',
+                    color: 'var(--white)',
                     textDecoration: 'none',
                     textAlign: 'center',
                     my: 2,
@@ -102,42 +111,49 @@ function NavBar() {
                 <Divider />
                 <List>
                   {pages.map((page) => (
-                    <ListItem key={page} disablePadding>
-                      <ListItemButton>
-                        <ListItemText primary={page} sx={{ textAlign: 'center' }} />
-                      </ListItemButton>
+                    <ListItem key={page.name} disablePadding>
+                      <Link href={page.href} passHref>
+                        <ListItemButton onClick={handleCloseDrawer} >
+                          <ListItemText primary={page.name} sx={{ textAlign: 'center', color: 'white', textDecoration: 'none' }} className='textlist'/>
+                        </ListItemButton>
+                      </Link>
                     </ListItem>
                   ))}
                 </List>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2, fontSize: '0.8rem' }}
-                >
-                  Book Now
-                </Button>
+                <Link href="/booking" passHref>
+                  <Button
+                    className='navbtn'
+                    variant="contained"
+                    sx={{ mt: 2, fontSize: '0.9rem' }}
+                  >
+                    Book Now
+                  </Button>
+                </Link>
               </Box>
             </Drawer>
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'center' }}>
             {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseDrawer}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
+              <Link key={page.name} href={page.href} passHref>
+                <Button
+                  onClick={handleCloseDrawer}
+                  sx={{ my: 2, color: 'white', display: 'block' }}
+                >
+                  {page.name}
+                </Button>
+              </Link>
             ))}
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ fontSize: '0.9rem', padding: '6px 12px' }}
-            >
-              Book Now
-            </Button>
+            <Link href="/booking" passHref>
+              <Button
+                className='navbtn'
+                variant="contained"
+                sx={{ fontSize: '15px'}}
+              >
+                Book Now
+              </Button>
+            </Link>
           </Box>
         </Toolbar>
       </Container>
