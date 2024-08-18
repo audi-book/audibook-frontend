@@ -1,4 +1,9 @@
 .navbar{
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100; 
     background-color: var(--brown) !important;
 }
 
@@ -24,14 +29,14 @@
 }
 
 .MuiDrawer-paper a {
-    text-decoration: none;
+    text-decoration: none !important; 
 }
   
 
 .MuiListItemButton-root {
-    text-decoration: none;
+    text-decoration: none !important;
 }
   
 .MuiDrawer-paper a:hover {
-    text-decoration: none;
+    text-decoration: none !important;
 }
