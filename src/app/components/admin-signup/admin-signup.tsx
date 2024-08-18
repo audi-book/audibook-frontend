@@ -5,8 +5,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -14,8 +12,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
-// TODO remove, this demo shouldn't need to reset the theme.
+
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -30,26 +29,29 @@ export default function SignUp() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
+      <Typography className='topic'>
+          Sign Up
+      </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
-        <Box
+        <Box className='form-outer'
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            border: '1px solid #ccc', 
+            borderRadius: '8px', 
+            padding: '16px', 
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{ m: 1, bgcolor: 'var(--brown)' }}>
+            <AdminPanelSettingsIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }} >
+            <Grid container spacing={2} >
               <Grid item xs={12} >
-                <TextField
+                <TextField className='text-field'
                   autoComplete="given-name"
                   name="name"
                   required
@@ -60,7 +62,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField className='text-field'
                   required
                   fullWidth
                   name="contact"
@@ -71,7 +73,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField className='text-field'
                   required
                   fullWidth
                   id="email"
@@ -81,7 +83,7 @@ export default function SignUp() {
                 />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+                <TextField className='text-field'
                   required
                   fullWidth
                   name="password"
@@ -94,6 +96,7 @@ export default function SignUp() {
             
             </Grid>
             <Button
+              className='btn'
               type="submit"
               fullWidth
               variant="contained"
@@ -103,7 +106,7 @@ export default function SignUp() {
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/admin-login" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>

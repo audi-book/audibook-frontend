@@ -14,9 +14,9 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function AdminLogIn() {
@@ -31,24 +31,27 @@ export default function AdminLogIn() {
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Typography className='topic'>
+          Log In
+      </Typography>
+      <Container component="main" maxWidth="xs" >
         <CssBaseline />
-        <Box
+        <Box className='form-outer'
           sx={{
             marginTop: 8,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            border: '1px solid #ccc', 
+            borderRadius: '8px', 
+            padding: '16px', 
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-            <LockOutlinedIcon />
+          <Avatar sx={{ m: 1, bgcolor: 'var(--brown)' }}>
+            <AdminPanelSettingsIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            Login
-          </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <TextField
+            <TextField className='text-field'
               margin="normal"
               required
               fullWidth
@@ -58,7 +61,7 @@ export default function AdminLogIn() {
               autoComplete="email"
               autoFocus
             />
-            <TextField
+            <TextField className='text-field'
               margin="normal"
               required
               fullWidth
@@ -87,14 +90,13 @@ export default function AdminLogIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/admin-signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
           </Box>
         </Box>
-        
       </Container>
     </ThemeProvider>
   );
