@@ -13,18 +13,17 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn';
 
 const Footer: React.FC = () => {
   return (
-    <Box component="footer" sx={{ bgcolor: 'black', color: 'white', p: 4, mt: 5 }}>
+    <Box component="footer" sx={{ bgcolor: 'black', color: 'white', p: 4, mt: 5 }} className='footer'>
       <Grid container spacing={5}>
 
       <Grid item xs={15} sm={4} className='about-us'>
           <Typography variant="h6">About Us</Typography>
-          <Typography mt={2}>
-          The AUDIBOOK at the Faculty of Technology, University of Sri Jayewardenepura, 
+          <Typography mt={2} >
+          The AudiBook at the Faculty of Technology, University of Sri Jayewardenepura, 
           is designed to streamline the process of reserving our state-of-the-art facilities. 
           Whether you're planning a lecture, seminar, special event, or community gathering, our platform ensures 
           a hassle-free booking experience. We proudly offer our auditorium not only to faculty members and students but
-           also to external parties, supporting both academic and cultural activities within and beyond our university community.
-            Our mission is to provide transparency, efficiency, and convenience for all users.
+          also to external parties, supporting both academic and cultural activities within and beyond our university community.
           </Typography>
         </Grid>
 

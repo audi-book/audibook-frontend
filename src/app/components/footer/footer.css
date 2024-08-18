@@ -1,61 +1,63 @@
-/* Styling for the "About Us" section */
-footer .about-us 
+ .footer{
+    background-color: var(--brown) !important;
+ }
+
+ footer .about-us 
   {
-    text-align: justify; /* Justify text */
-    
+    text-align: left !important; 
   }
 
   .centre-section
    {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: space-between !important;
   }
   .logo-container 
   {
-    display: flex;
+    display: flex !important;
     
   }
   
   .logo 
   {
-    max-width: 200px; /* Adjust as needed */
-    max-height: 200px;
+    max-width: 200px !important; 
+    max-height: 200px !important;
   }
 
   .follow-us 
   {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px; /* Adjust spacing between logo and "Follow Us" */
-  }
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    margin-top: 20px !important;
+  } 
 
   @media (max-width: 600px) 
   {
     .centre-section {
-      align-items: flex-start; /* Adjust alignment on smaller screens */
+      align-items: flex-start !important; 
     }
 
     .logo-container {
-      justify-content: center; /* Center the logo on smaller screens */
+      justify-content: center !important;
     }
   
     .follow-us .MuiBox-root {
-      justify-content: flex-start; /* Align icons to the left on smaller screens */
-    }
+      justify-content: flex-start !important; 
   }
 
   .contact-us 
   {
-   display: flex;
-  flex-direction: column;
-  margin-right: 0px;
-  justify-content: flex-start;
+   display: flex !important;
+  flex-direction: column !important;
+  margin-right: 0px !important;
+  justify-content: flex-start !important;
   }
   
   .contact-us .MuiBox-root 
   {
-    margin-top: 20px; /* Adjust spacing */
+    margin-top: 20px !important; 
+  }
   }
