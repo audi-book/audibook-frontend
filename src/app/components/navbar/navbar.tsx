@@ -120,7 +120,7 @@ function NavBar() {
                     </ListItem>
                   ))}
                 </List>
-                <Link href="/user-login" passHref>
+                <Link href="/user-signup" passHref>
                   <Button
                     className='navbtn'
                     variant="contained"
@@ -145,7 +145,7 @@ function NavBar() {
             ))}
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Link href="/user-login" passHref>
+            <Link href="/user-signup" passHref>
               <Button
                 className='navbtn'
                 variant="contained"
