@@ -27,6 +27,23 @@ const pages = [
 
 function NavBar() {
   const [drawerOpen, setDrawerOpen] = React.useState(false);
+  const [buttonConfig, setButtonConfig] = React.useState({
+    text: 'Book Now',
+    href: '/user-signup'
+  });
+
+  React.useEffect(() => {
+    // Check the current pathname to determine the button text and href
+    const pathname = window.location.pathname;
+
+    if (pathname === '/admin-login') {
+      setButtonConfig({ text: 'Sign Up', href: '/admin-signup' });
+    } else if (pathname === '/admin-signup') {
+      setButtonConfig({ text: 'Log In', href: '/admin-login' });
+    } else {
+      setButtonConfig({ text: 'Book Now', href: '/user-signup' });
+    }
+  }, []);
 
   const handleDrawerToggle = () => {
     setDrawerOpen(!drawerOpen);
@@ -120,13 +137,13 @@ function NavBar() {
                     </ListItem>
                   ))}
                 </List>
-                <Link href="/user-signup" passHref>
+                <Link href={buttonConfig.href} passHref>
                   <Button
                     className='navbtn'
                     variant="contained"
                     sx={{ mt: 2, fontSize: '0.9rem' }}
                   >
-                    Book Now
+                    {buttonConfig.text}
                   </Button>
                 </Link>
               </Box>
@@ -145,13 +162,13 @@ function NavBar() {
             ))}
           </Box>
           <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Link href="/user-signup" passHref>
+            <Link href={buttonConfig.href} passHref>
               <Button
                 className='navbtn'
                 variant="contained"
                 sx={{ fontSize: '15px'}}
               >
-                Book Now
+                {buttonConfig.text}
               </Button>
             </Link>
           </Box>
