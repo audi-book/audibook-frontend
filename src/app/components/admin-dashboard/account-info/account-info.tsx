@@ -20,7 +20,7 @@ const AccountInformationForm: React.FC = () => {
         <MDBCol md="12">
           <MDBCard className='overall'>
             <MDBCardBody>
-              <h4>Account Information</h4>
+              <h4>Event Information</h4>
               <br />
               <br />
               <MDBRow>
