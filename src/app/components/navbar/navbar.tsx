@@ -21,7 +21,7 @@ import Divider from '@mui/material/Divider';
 const pages = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Facility', href: '/facility' },
+  { name: 'Facility', href: '/facilities' },
   { name: 'Gallery', href: '/gallery' }
 ];
 
