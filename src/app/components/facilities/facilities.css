@@ -1,0 +1,90 @@
+/* Facilities.css */
+
+.facilities-container {
+    padding: 20px;
+    background-color: #bac0c6; /* Light grey background */
+  }
+  
+  .facilities-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #7b0e0e;
+    font-weight: bold;
+  }
+  
+  .facilities-grid {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .facility-item {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .facility-image-container {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+  }
+  
+  .facility-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .facility-description-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .facility-name {
+    color: #631a05;
+    margin-bottom: 10px;
+    font-weight: bold;
+  }
+  
+  .facility-description {
+    color: #555;
+    font-size: 18px;
+  }
+  
+  /* Alignments for alternating layouts */
+  .left-image .facility-image-container {
+    order: 1;
+  }
+  
+  .left-image .facility-description-container {
+    order: 2;
+  }
+  
+  .right-image .facility-image-container {
+    order: 2;
+  }
+  
+  .right-image .facility-description-container {
+    order: 1;
+  }
+  
+  /* Hover effect for images */
+  .facility-image:hover {
+    transform: scale(1.1); /* Slight zoom effect on hover */
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 600px) {
+    .facility-item {
+      flex-direction: column;
+    }
+  
+    .facility-image-container {
+      height: 200px;
+    }
+  }
+  

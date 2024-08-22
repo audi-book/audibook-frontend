@@ -6,12 +6,18 @@ import NavBar from "./components/navbar/navbar";
 import ImageSlider from "./components/image-slider/image-slider";
 import Footer from "./components/footer/footer";
 
-export default function Home() {
+
+export default function Home() 
+{
   return (
     <>
     <NavBar />
     <ImageSlider />
     <Footer/>
+    
     </>
   );
 }
+
+
+
