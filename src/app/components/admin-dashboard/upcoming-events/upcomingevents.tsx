@@ -5,7 +5,8 @@ import Box from "@mui/material/Box";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import Card from "react-bootstrap/Card";
 import { styled } from "@mui/material/styles";
-import { Typography } from "@mui/material";
+import { Typography, CircularProgress } from "@mui/material";
+import { useGetAllEventsQuery } from "../../../../../redux/features/auth/eventApi";
 
 const CustomCard = styled(Card)({
   border: "none",
@@ -14,13 +15,33 @@ const CustomCard = styled(Card)({
   boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
   padding: "10px",
 });
- const rows:any[]=[];
-const Upcomingevents = () => {
 
-    
+const Upcomingevents = () => {
+  const { data: eventData, isLoading, error } = useGetAllEventsQuery({});
+
+  const rows =
+    eventData?.data
+      .filter(
+        (event: any) =>
+          event.status === "Approved" && new Date(event.eventDate) > new Date()
+      )
+      .map((event: any) => ({
+        id: event.id,
+        name: event.eventName,
+        date: new Date(event.eventDate).toLocaleDateString(),
+        StartTime: event.startTime,
+        status: event.status,
+      })) || [];
+
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
   return (
     <CustomCard className="stat-card">
-      <Typography variant="h5" component="div">Upcoming Events</Typography>
+      <Typography variant="h5" component="div">
+        Upcoming Events
+      </Typography>
       <br />
       <Box
         sx={{

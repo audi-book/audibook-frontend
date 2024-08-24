@@ -1,3 +1,4 @@
+'use client';
 import React, { useState, useEffect } from 'react';
 import {
   MDBContainer,
@@ -7,12 +8,28 @@ import {
   MDBCard,
   MDBCardBody
 } from 'mdb-react-ui-kit';
-import './pending-info.css';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { useUpdateEventStatusMutation } from '../../../../../../redux/features/auth/eventApi'; 
 
-
-const AccountInformationForm: React.FC = () => {
+const AccountInformationForm: React.FC<{ eventId: any }> = ({ eventId }) => {
+  const [status, setStatus] = useState<string>('Pending');
+  const [updateEventStatus] = useUpdateEventStatusMutation();
+  
+  const handleStatusChange = (newStatus: string) => {
+      updateEventStatus({
+        eventId,
+        status: newStatus,
+      })
+        .unwrap()
+        .then(() => {
+          setStatus(newStatus); 
+          
+        })
+        .catch((error) => {
+          console.error('Failed to update status:', error);
+        });
+  };
 
   return (
     <MDBContainer>
@@ -20,76 +37,6 @@ const AccountInformationForm: React.FC = () => {
         <MDBCol md="12">
           <MDBCard className='overall'>
             <MDBCardBody>
-              <h4>Event Information</h4>
-              <br />
-              <br />
-              <MDBRow>
-                <MDBCol md="6">
-                  <div className="custom-input mb-4">
-                    <input
-                      type="text"
-                      id="eventName"
-                      className="form-control"
-                      value=""
-                    />
-                    <label htmlFor="eventName" className={`form-label`}>
-                      Event name
-                    </label>
-                  </div>
-                </MDBCol>
-                <MDBCol md="6">
-                  <div className="custom-input mb-4">
-                    <input
-                      type="text"
-                      id="eventDate"
-                      className="form-control"
-                    />
-                    <label htmlFor="eventDate" className={`form-label`}>
-                      Event Date
-                    </label>
-                  </div>
-                </MDBCol>
-              </MDBRow>
-              <MDBRow>
-                <MDBCol md="6">
-                  <div className="custom-input mb-4">
-                    <input
-                      type="text"
-                      id="startTime"
-                      className="form-control"
-                      value=""
-                    />
-                    <label htmlFor="startTime" className={`form-label`}>
-                      Start Time
-                    </label>
-                  </div>
-                </MDBCol>
-                <MDBCol md="6">
-                  <div className="custom-input mb-4">
-                    <input
-                      type="text"
-                      id="endTime"
-                      className="form-control"
-                    />
-                    <label htmlFor="endTime" className={`form-label`}>
-                      End time
-                    </label>
-                  </div>
-                </MDBCol>
-              </MDBRow>
-              <MDBRow className="mt-3">
-                <MDBCol md="12">
-                  <div className="custom-input mb-4">
-                    <textarea
-                      id="purpose"
-                      className="form-control"
-                    ></textarea>
-                    <label htmlFor="purpose" className={`form-label`}>
-                      Purpose
-                    </label>
-                  </div>
-                </MDBCol>
-              </MDBRow>
               <MDBRow className="mt-4">
                 <MDBCol md="auto">
                   <MDBBtn className="ac-info-button" href="/admin-dashboard/pending-reservations">
@@ -99,12 +46,18 @@ const AccountInformationForm: React.FC = () => {
                 <MDBCol md="auto">
                   <DropdownButton
                     id="status-dropdown"
-                    title="Pending"
+                    title={status}
                     variant="secondary"
                   >
-                    <Dropdown.Item href="#">Not Started</Dropdown.Item>
-                    <Dropdown.Item href="#">Pending</Dropdown.Item>
-                    <Dropdown.Item href="#">Approved</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleStatusChange('Pending')}>
+                      Pending
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleStatusChange('Approved')}>
+                      Approved
+                    </Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleStatusChange('Rejected')}>
+                      Rejected
+                    </Dropdown.Item>
                   </DropdownButton>
                 </MDBCol>
               </MDBRow>

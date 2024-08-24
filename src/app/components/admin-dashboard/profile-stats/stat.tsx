@@ -1,88 +1,107 @@
-import React from "react";
-import { 
-    MDBCol, 
-    MDBContainer, 
-    MDBRow, 
-    MDBCard, 
-    MDBCardText, 
-    MDBCardBody, 
-    MDBCardImage 
+import React, { useEffect, useState } from "react";
+import {
+  MDBCol,
+  MDBContainer,
+  MDBRow,
+  MDBCard,
+  MDBCardText,
+  MDBCardBody,
+  MDBBtn
 } from "mdb-react-ui-kit";
+import { useGetEventByIdQuery } from "../../../../../redux/features/auth/eventApi"; 
 
-interface ProfileProfileStatProps {
-    admin: any;
-    refetch: any;
-}
+const ProfileStats: React.FC<{ eventId: number }> = ({ eventId }) => {
+  const { data: eventData, isLoading, error } = useGetEventByIdQuery(eventId);
 
-const ProfileStats: React.FC = () => {
-    return (
-        <section style={{ backgroundColor: "white" }}>
-            <MDBContainer className="py-5">
+  if (isLoading) return <div>Loading...</div>;
+
+  const event = eventData?.data;
+
+  return (
+    <section style={{ backgroundColor: "white" }}>
+      <MDBContainer className="py-5">
+        <MDBRow>
+          <MDBCol lg="12">
+            <MDBCard
+              className="mb-4"
+              style={{
+                backgroundColor: "var(--light-grey)",
+                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
+              }}
+            >
+              <MDBCardBody>
                 <MDBRow>
-                    
-                    <MDBCol lg="12">
-                        <MDBCard
-                            className="mb-4"
-                            style={{
-                                backgroundColor: "var(--light-grey)",
-                                boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
-                            }}
-                        >
-                            <MDBCardBody>
-                                {/* Event Name */}
-                                <MDBRow>
-                                    <MDBCol sm="3">
-                                        <MDBCardText>Event Name</MDBCardText>
-                                    </MDBCol>
-                                    <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">
-                                            {/*Name here*/}
-                                        </MDBCardText>
-                                    </MDBCol>
-                                </MDBRow>
-                                <hr />
-
-                                {/* Event ID */}
-                                <MDBRow>
-                                    <MDBCol sm="3">
-                                        <MDBCardText>Event ID</MDBCardText>
-                                    </MDBCol>
-                                    <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">
-                                            {/*Event id here*/}
-                                        </MDBCardText>
-                                    </MDBCol>
-                                </MDBRow>
-                                <hr />
-                                {/* Contact No */}
-                                <MDBRow>
-                                    <MDBCol sm="3">
-                                        <MDBCardText>Contact No</MDBCardText>
-                                    </MDBCol>
-                                    <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">
-                                            {/*Contact No here*/}
-                                        </MDBCardText>
-                                    </MDBCol>
-                                </MDBRow>
-                                <hr />
-                                {/* Account Status */}
-                                <MDBRow>
-                                    <MDBCol sm="3">
-                                        <MDBCardText> Status</MDBCardText>
-                                    </MDBCol>
-                                    <MDBCol sm="9">
-                                        <MDBCardText className="text-muted">
-                                            {/*Verification stats here*/}
-                                        </MDBCardText>
-                                    </MDBCol>
-                                </MDBRow>
-                            </MDBCardBody>
-                        </MDBCard>
-                    </MDBCol>
+                  <MDBCol sm="3">
+                    <MDBCardText>Event ID</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.id || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
                 </MDBRow>
-            </MDBContainer>
-        </section>
-    );
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Event Name</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.eventName || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Event Status</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.status || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Date</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.eventDate || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>Start Time</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.startTime || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+                <hr />
+                <MDBRow>
+                  <MDBCol sm="3">
+                    <MDBCardText>End Time</MDBCardText>
+                  </MDBCol>
+                  <MDBCol sm="9">
+                    <MDBCardText className="text-muted">
+                      {event?.endTime || 'N/A'}
+                    </MDBCardText>
+                  </MDBCol>
+                </MDBRow>
+              </MDBCardBody>
+            </MDBCard>
+          </MDBCol>
+        </MDBRow>
+      </MDBContainer>
+    </section>
+  );
 };
+
 export default ProfileStats;

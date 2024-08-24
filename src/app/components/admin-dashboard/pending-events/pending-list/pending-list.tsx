@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import SearchBox from '../search-box/search-box';
 import './pending-list.css';
 import { useRouter } from 'next/navigation';
+import { useGetAllEventsQuery } from '../../../../../../redux/features/auth/eventApi'; 
 
 interface Reservation {
   id: number;
@@ -16,11 +17,9 @@ interface Reservation {
   status: string;
 }
 
-interface ReservationIdProps {
-}
-
-const PendingTable: React.FC<ReservationIdProps> = () => {
+const PendingTable: React.FC = () => {
   const [filteredRows, setFilteredRows] = useState<Reservation[]>([]);
+  const { data: eventData } = useGetAllEventsQuery({});
   const router = useRouter();
 
   const handleViewClick = (id: number) => {
@@ -28,27 +27,21 @@ const PendingTable: React.FC<ReservationIdProps> = () => {
   };
 
   useEffect(() => {
-    // Mock data for reservations
-    const reservations: Reservation[] = [
-     
-      { id: 1, eventName: 'Annual Meeting', eventDate: '2024-09-01', startTime: '02:00 PM', endTime: '04:00 PM', status: 'Pending' },
-    ];
-
-    if (reservations.length) {
+    if (eventData && eventData.data) {
+      const pendingEvents = eventData.data.filter((event: any) => event.status === 'Pending');
+      
       setFilteredRows(
-        reservations.map((reservation) => ({
-          id: reservation.id,
-          eventName: reservation.eventName,
-          eventDate: new Date(reservation.eventDate).toLocaleDateString(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-          status: reservation.status || 'N/A',
+        pendingEvents.map((event: any) => ({
+          id: event.id,
+          eventName: event.eventName,
+          eventDate: new Date(event.eventDate).toLocaleDateString(),
+          startTime: event.startTime,
+          endTime: event.endTime,
+          status: event.status || 'N/A',
         }))
       );
-    } else {
-      setFilteredRows([]);
     }
-  }, []);
+  }, [eventData]);
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Reservation ID', flex: 1 },
@@ -74,41 +67,29 @@ const PendingTable: React.FC<ReservationIdProps> = () => {
   ];
 
   const handleSearch = (query: string) => {
-    const reservations: Reservation[] = [
-    
-      { id: 1, eventName: 'Annual Meeting', eventDate: '2024-09-01', startTime: '02:00 PM', endTime: '04:00 PM', status: 'Pending' },
-    ];
+    if (eventData && eventData.data) {
+      const pendingEvents = eventData.data.filter((event: any) => event.status === 'Pending');
 
-    if (query) {
       setFilteredRows(
-        reservations.filter((reservation) =>
-          reservation.eventName.toLowerCase().includes(query.toLowerCase())
-        ).map((reservation) => ({
-          id: reservation.id,
-          eventName: reservation.eventName,
-          eventDate: new Date(reservation.eventDate).toLocaleDateString(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-          status: reservation.status || 'N/A',
-        }))
-      );
-    } else {
-      setFilteredRows(
-        reservations.map((reservation) => ({
-          id: reservation.id,
-          eventName: reservation.eventName,
-          eventDate: new Date(reservation.eventDate).toLocaleDateString(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-          status: reservation.status || 'N/A',
-        }))
+        pendingEvents
+          .filter((event: any) =>
+            event.eventName.toLowerCase().includes(query.toLowerCase())
+          )
+          .map((event: any) => ({
+            id: event.id,
+            eventName: event.eventName,
+            eventDate: new Date(event.eventDate).toLocaleDateString(),
+            startTime: event.startTime,
+            endTime: event.endTime,
+            status: event.status || 'N/A',
+          }))
       );
     }
   };
 
   return (
     <div>
-      <SearchBox />
+      <SearchBox onSearch={handleSearch} />
       <Box
         sx={{
           height: 400,

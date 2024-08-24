@@ -5,25 +5,21 @@ import {
     MDBRow,
     MDBCard,
     MDBCardText,
-    MDBCardBody,
-    MDBCardImage
+    MDBCardBody
 } from "mdb-react-ui-kit";
 
-
-interface ProfileProfileStatProps {
-    admin: any;
-    refetch: any;
+interface ProfileStatsProps {
+    user?: {
+        name?: string;
+        id?: number;
+    };
 }
 
-
-const ProfileStats: React.FC = () => {
-
+const ProfileStats: React.FC<ProfileStatsProps> = ({ user }) => {
     return (
-
         <section style={{ backgroundColor: "white" }}>
             <MDBContainer className="py-5">
                 <MDBRow>
-
                     <MDBCol lg="12">
                         <MDBCard
                             className="mb-4"
@@ -36,11 +32,11 @@ const ProfileStats: React.FC = () => {
                                 {/* Full Name */}
                                 <MDBRow>
                                     <MDBCol sm="3">
-                                        <MDBCardText> Name</MDBCardText>
+                                        <MDBCardText>Name</MDBCardText>
                                     </MDBCol>
                                     <MDBCol sm="9">
                                         <MDBCardText className="text-muted">
-                                            {/*Name here*/}
+                                            {user?.name || "Name not available"}
                                         </MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
@@ -53,7 +49,7 @@ const ProfileStats: React.FC = () => {
                                     </MDBCol>
                                     <MDBCol sm="9">
                                         <MDBCardText className="text-muted">
-                                            {/*Admin id here*/}
+                                            {user?.id || "ID not available"}
                                         </MDBCardText>
                                     </MDBCol>
                                 </MDBRow>
@@ -65,4 +61,5 @@ const ProfileStats: React.FC = () => {
         </section>
     );
 };
+
 export default ProfileStats;

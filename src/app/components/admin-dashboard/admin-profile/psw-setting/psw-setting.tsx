@@ -1,17 +1,55 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   MDBContainer,
   MDBRow,
   MDBCol,
   MDBBtn,
   MDBCard,
-  MDBCardBody,
+  MDBCardBody
 } from "mdb-react-ui-kit";
+import { useResetPasswordMutation } from "../../../../../../redux/features/auth/userApi"; 
 import "./psw-setting.css";
+import toast from "react-hot-toast";
 
+const PasswordSettingsForm: React.FC<{ userId: any }> = ({ userId }) => {
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [resetPassword,{isSuccess,isError}] = useResetPasswordMutation();
 
+  const handleSave = async () => {
+    if (newPassword !== confirmPassword) {
+      toast.error("New password and confirm password do not match.")
+      return;
+    }
+    try {
+      await resetPassword({ id: userId, oldPassword, password: newPassword }).unwrap();
+      setOldPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
+    } catch (error) {
+      console.error('Failed to update password:', error);
+    }
+  };
+  useEffect(() => {
+    if(isSuccess){
+      toast.success("Password updated successfully.")
+    }
+    if(isError){
+      toast.error("Failed to update password. Please try again.")
+    }
+  }, [isError, isSuccess]);
 
-const PasswordSettingsForm: React.FC = () => {
+  const handleClear = () => {
+    setOldPassword("");
+    setNewPassword("");
+    setConfirmPassword("");
+  };
+
+  const handlePasswordToggle = () => {
+    setShowPassword(prev => !prev);
+  };
 
   return (
     <MDBContainer className="margin-applier">
@@ -26,14 +64,13 @@ const PasswordSettingsForm: React.FC = () => {
                 <MDBCol md="12">
                   <div className="custom-input mb-4">
                     <input
-                      type= "text"
+                      type={showPassword ? "text" : "password"}
                       id="oldPassword"
                       className="form-control"
-                      value=""
-                    //   onChange={handleInputChange}
-                      
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
                     />
-                    <label htmlFor="oldPassword" className={`form-label`}>
+                    <label htmlFor="oldPassword" className="form-label">
                       Old Password
                     </label>
                   </div>
@@ -41,13 +78,13 @@ const PasswordSettingsForm: React.FC = () => {
                 <MDBCol md="12">
                   <div className="custom-input mb-4">
                     <input
-                      type="text"
+                      type={showPassword ? "text" : "password"}
                       id="newPassword"
                       className="form-control"
-                      value=""
-                    //   onChange={handleInputChange}
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
                     />
-                    <label htmlFor="newPassword" className={`form-label`}>
+                    <label htmlFor="newPassword" className="form-label">
                       New Password
                     </label>
                   </div>
@@ -55,13 +92,13 @@ const PasswordSettingsForm: React.FC = () => {
                 <MDBCol md="12">
                   <div className="custom-input mb-4">
                     <input
-                      type="text"
+                      type={showPassword ? "text" : "password"}
                       id="confirmPassword"
                       className="form-control"
-                      value=""
-                    //   onChange={handleInputChange}
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                     />
-                    <label htmlFor="confirmPassword" className={`form-label`}>
+                    <label htmlFor="confirmPassword" className="form-label">
                       Confirm Password
                     </label>
                   </div>
@@ -73,13 +110,10 @@ const PasswordSettingsForm: React.FC = () => {
                     <input
                       type="checkbox"
                       id="showPassword"
-                    //   checked={formData.showPassword}
-                    //   onChange={handleCheckboxChange}
+                      checked={showPassword}
+                      onChange={handlePasswordToggle}
                     />
-                    <label
-                      htmlFor="showPassword"
-                      className="form-label-checkbox"
-                    >
+                    <label htmlFor="showPassword" className="form-label-checkbox">
                       Show password
                     </label>
                   </div>
@@ -87,12 +121,14 @@ const PasswordSettingsForm: React.FC = () => {
               </MDBRow>
               <MDBRow className="mt-4">
                 <MDBCol md="auto">
-                  <MDBBtn className="password-btn">
+                  <MDBBtn className="password-btn" onClick={handleSave}>
                     Save changes
                   </MDBBtn>
                 </MDBCol>
                 <MDBCol md="auto">
-                  <MDBBtn className="password-btn">Clear</MDBBtn>
+                  <MDBBtn className="password-btn" onClick={handleClear}>
+                    Clear
+                  </MDBBtn>
                 </MDBCol>
               </MDBRow>
             </MDBCardBody>
