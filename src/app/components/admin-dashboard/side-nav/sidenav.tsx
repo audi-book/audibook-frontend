@@ -28,8 +28,8 @@ import Avatar from '@mui/material/Avatar';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { MDBCardImage } from 'mdb-react-ui-kit';
-
+import { useDispatch } from 'react-redux'; 
+import { userLoggedOut } from '../../../../../redux/features/auth/authSlice'; 
 
 const drawerWidth = 240;
 
@@ -96,14 +96,14 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       ...openedMixin(theme),
       '& .MuiDrawer-paper': {
         ...openedMixin(theme),
-        backgroundColor: 'var(--light-purple)', 
+        backgroundColor: 'var(--light-purple)',
       },
     }),
     ...(!open && {
       ...closedMixin(theme),
       '& .MuiDrawer-paper': {
         ...closedMixin(theme),
-        backgroundColor: 'var(--light-purple)', 
+        backgroundColor: 'var(--light-purple)',
       },
     }),
   }),
@@ -116,14 +116,17 @@ const StyledLink = styled(Link)({
 
 interface MiniDrawerProps {
   childTitle: string;
+  user: any;
 }
 
-export default function MiniDrawer({ childTitle }: MiniDrawerProps) {
+export default function MiniDrawer({ childTitle, user }: MiniDrawerProps) {
   const theme = useTheme();
   const router = useRouter();
+  const dispatch = useDispatch(); 
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const [notifications, setNotifications] = React.useState(true);
+
 
   React.useEffect(() => {
     setTitle(childTitle);
@@ -137,9 +140,13 @@ export default function MiniDrawer({ childTitle }: MiniDrawerProps) {
     setOpen(false);
   };
 
-  const handleLoggedOut = () => {
-    /*dispatch(userLoggedOut());*/
-    router.push('/');
+  const handleLoggedOut = async () => {
+    try {
+      dispatch(userLoggedOut()); 
+      router.push('/'); 
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
   };
 
   const menuItems = [
@@ -177,22 +184,20 @@ export default function MiniDrawer({ childTitle }: MiniDrawerProps) {
                 <NotificationsIcon sx={{ fontSize: 30 }} />
               </Badge>
             </IconButton>
-           
-                  <Avatar
-                    alt="avatar"
-                    sx={{
-                      width: 40,
-                      height: 40,
-                      marginLeft: 1
-                    }}
-                  ></Avatar>
-                
+            <Avatar
+              alt="avatar"
+              sx={{
+                width: 40,
+                height: 40,
+                marginLeft: 1
+              }}
+            ></Avatar>
             <Typography variant="body1" sx={{ display: { xs: 'none', md: 'block' }, marginLeft: 1 }}>
-              Name
+              {user?.data?.name}
             </Typography>
           </Box>
         </Toolbar>
-      </AppBar> 
+      </AppBar>
       <Drawer variant="permanent" open={open}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
@@ -250,12 +255,6 @@ export default function MiniDrawer({ childTitle }: MiniDrawerProps) {
           ))}
         </List>
       </Drawer>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3 }}
-      >
-        <DrawerHeader />
-      </Box>
     </Box>
   );
 }

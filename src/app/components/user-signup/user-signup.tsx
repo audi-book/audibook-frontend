@@ -1,4 +1,5 @@
-'use client';
+ "use client"
+import { useRegisterMutation } from '../../../../redux/features/auth/authApi'; 
 import './user-signup.css';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
@@ -8,28 +9,58 @@ import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 const defaultTheme = createTheme();
 
+type RegistrationData = {
+  name: string;
+  email: string;
+  contact: string;
+  password: string;
+  role: string;
+};
+
 export default function UserSignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [register, { isLoading, isSuccess, isError, error }] = useRegisterMutation();
+  const router = useRouter();
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+    const registrationData: RegistrationData = {
+      name: data.get('name') as string,
+      email: data.get('email') as string,
+      contact: data.get('contact') as string,
+      password: data.get('password') as string,
+      role: 'USER', // Default role set to 'USER'
+    };
+
+    await register(registrationData).unwrap();
+    }
+  
+    React.useEffect(() => {
+      if (isSuccess) {
+        toast.success("User sign up successful");
+        router.push("/user-login");
+      }
+      if (isError) {
+        if ("data" in error) {
+          const errorData = (error as any) || "Registration Error";
+          toast.error(errorData?.data?.message);
+        }
+      }
+    }, [isSuccess, isError, error, router]);
+  
+
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Typography className='topic'>
-          Sign Up
+        Sign Up
       </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />

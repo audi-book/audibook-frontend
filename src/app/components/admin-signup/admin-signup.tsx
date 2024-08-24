@@ -1,6 +1,6 @@
 'use client';
-import * as React from 'react';
 import './admin-signup.css';
+import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,19 +13,54 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import { useRegisterMutation } from '../../../../redux/features/auth/authApi'; 
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 
 const defaultTheme = createTheme();
 
-export default function SignUp() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+type RegistrationData = {
+  name: string;
+  email: string;
+  contact: string;
+  password: string;
+  role: string;
+};
+
+export default function AdminSignUp() {
+  const [register, { isLoading, isSuccess, isError, error }] = useRegisterMutation();
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const registrationData: RegistrationData = {
+      name: data.get('name') as string,
+      email: data.get('email') as string,
+      contact: data.get('contact') as string,
+      password: data.get('password') as string,
+      role: 'ADMIN', // Set role to 'ADMIN'
+    };
+
+    try {
+      await register(registrationData).unwrap();
+    } catch (err) {
+      console.error('Registration failed:', err);
+    }
   };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      toast.success('Admin sign up successful');
+      router.push('/admin-login'); // Redirect to admin login page on success
+    }
+    if (isError) {
+      if (error && 'data' in error) {
+        const errorMessage = (error as any)?.data?.message || 'Registration Error';
+        toast.error(errorMessage);
+      }
+    }
+  }, [isSuccess, isError, error, router]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -101,8 +136,9 @@ export default function SignUp() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
-              Sign Up
+              {isLoading ? 'Signing Up...' : 'Sign Up'}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
@@ -113,7 +149,6 @@ export default function SignUp() {
             </Grid>
           </Box>
         </Box>
-        
       </Container>
     </ThemeProvider>
   );

@@ -1,5 +1,5 @@
-'use client';
-import'./user-login.css';
+"use client";
+import './user-login.css';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -14,23 +14,48 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useLoginMutation } from '../../../../redux/features/auth/authApi'; 
 
 const defaultTheme = createTheme();
 
 export default function UserSignIn() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const [login, { isLoading, isSuccess, isError, error }] = useLoginMutation();
+  const router = useRouter();
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
+    const loginData = {
+      email: data.get('email') as string,
+      password: data.get('password') as string,
+    };
+
+    try {
+      await login(loginData).unwrap();
+    } catch (err) {
+      console.error('Failed to log in:', err);
+    }
   };
+
+  React.useEffect(() => {
+    if (isSuccess) {
+      toast.success("Login successful");
+      router.push("/booking"); 
+    }
+    if (isError) {
+      if ("data" in error) {
+        const errorData = (error as any) || "Login Error";
+        toast.error(errorData?.data?.message || "Failed to log in. Please try again.");
+      }
+    }
+  }, [isSuccess, isError, error, router]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <Typography className='topic'>
-          Log In
+        Log In
       </Typography>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -79,8 +104,9 @@ export default function UserSignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              disabled={isLoading}
             >
-              Log In
+              {isLoading ? 'Logging in...' : 'Log In'}
             </Button>
             <Grid container>
               <Grid item xs>
