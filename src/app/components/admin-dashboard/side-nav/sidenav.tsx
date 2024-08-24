@@ -96,14 +96,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       ...openedMixin(theme),
       '& .MuiDrawer-paper': {
         ...openedMixin(theme),
-        backgroundColor: 'var(--light-purple)',
+        backgroundColor: 'var(--brown) !important',
+        color: '#fff !important',
       },
     }),
     ...(!open && {
       ...closedMixin(theme),
       '& .MuiDrawer-paper': {
         ...closedMixin(theme),
-        backgroundColor: 'var(--light-purple)',
+        backgroundColor: 'var(--brown) !important',
+        color: '#fff !important',
       },
     }),
   }),
@@ -150,19 +152,19 @@ export default function MiniDrawer({ childTitle, user }: MiniDrawerProps) {
   };
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1 }} />, link: '/admin-dashboard' },
-    { text: 'Profile', icon: <AccountCircleIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1 }} />, link: '/admin-dashboard/admin-profile' },
-    { text: 'Reservation', icon: <EventSeatIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1 }} />, link: '/admin-dashboard/reservations' },
-    { text: 'Pending', icon: <PendingActionsIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1 }} />, link: '/admin-dashboard/pending-reservations' },
-    { text: 'Logout', icon: <ExitToAppIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1 }} />, link: '', onClick: handleLoggedOut }
+    { text: 'Dashboard', icon: <DashboardIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1, color:'white !important' }} />, link: '/admin-dashboard' },
+    { text: 'Profile', icon: <AccountCircleIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1, color:'white !important'  }} />, link: '/admin-dashboard/admin-profile' },
+    { text: 'Reservation', icon: <EventSeatIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1, color:'white !important'  }} />, link: '/admin-dashboard/reservations' },
+    { text: 'Pending', icon: <PendingActionsIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1, color:'white !important'  }} />, link: '/admin-dashboard/pending-reservations' },
+    { text: 'Logout', icon: <ExitToAppIcon sx={{ fontSize: 30, marginTop: 1, marginBottom: 1, color:'white !important'  }} />, link: '', onClick: handleLoggedOut }
   ];
 
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <AppBar position="fixed" open={open}>
-        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+        <Toolbar sx={{ display: 'flex', justifyContent: 'space-between', backgroundColor: 'var(--brown) !important', color: 'white !important'}}>
+          <Box sx={{ display: 'flex', alignItems: 'center'}}>
             <IconButton
               aria-label="open drawer"
               onClick={handleDrawerOpen}
