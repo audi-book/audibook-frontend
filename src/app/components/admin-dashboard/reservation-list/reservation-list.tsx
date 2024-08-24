@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import SearchBox from '../search-box/search-box';
 import './reservation-list.css';
 import { useRouter } from 'next/navigation';
+import { useGetAllEventsQuery } from '../../../../../redux/features/auth/eventApi'; 
 
 interface Reservation {
   id: number;
@@ -16,27 +17,19 @@ interface Reservation {
   status: string;
 }
 
-interface ReservationIdProps {
-}
-
-const ReservationTable: React.FC<ReservationIdProps> = () => {
+const ReservationTable: React.FC = () => {
   const [filteredRows, setFilteredRows] = useState<Reservation[]>([]);
+  const { data: eventData } = useGetAllEventsQuery({});
   const router = useRouter();
 
   const handleViewClick = (id: number) => {
-    router.push(`/organization-dashboard/organization-all-reservations/${id}`);
+    router.push(`/admin-dashboard/reservations/${id}`);
   };
 
   useEffect(() => {
-    // Mock data for reservations
-    const reservations: Reservation[] = [
-      { id: 1, eventName: 'Tech Conference', eventDate: '2024-08-20', startTime: '10:00 AM', endTime: '12:00 PM', status: 'Confirmed' },
-      { id: 2, eventName: 'Annual Meeting', eventDate: '2024-09-01', startTime: '02:00 PM', endTime: '04:00 PM', status: 'Pending' },
-    ];
-
-    if (reservations.length) {
+    if (eventData && eventData.data) {
       setFilteredRows(
-        reservations.map((reservation) => ({
+        eventData.data.map((reservation: any) => ({
           id: reservation.id,
           eventName: reservation.eventName,
           eventDate: new Date(reservation.eventDate).toLocaleDateString(),
@@ -45,10 +38,8 @@ const ReservationTable: React.FC<ReservationIdProps> = () => {
           status: reservation.status || 'N/A',
         }))
       );
-    } else {
-      setFilteredRows([]);
     }
-  }, []);
+  }, [eventData]);
 
   const columns: GridColDef[] = [
     { field: 'id', headerName: 'Reservation ID', flex: 1 },
@@ -74,41 +65,27 @@ const ReservationTable: React.FC<ReservationIdProps> = () => {
   ];
 
   const handleSearch = (query: string) => {
-    const reservations: Reservation[] = [
-      { id: 1, eventName: 'Tech Conference', eventDate: '2024-08-20', startTime: '10:00 AM', endTime: '12:00 PM', status: 'Confirmed' },
-      { id: 2, eventName: 'Annual Meeting', eventDate: '2024-09-01', startTime: '02:00 PM', endTime: '04:00 PM', status: 'Pending' },
-    ];
-
-    if (query) {
+    if (eventData && eventData.data) {
       setFilteredRows(
-        reservations.filter((reservation) =>
-          reservation.eventName.toLowerCase().includes(query.toLowerCase())
-        ).map((reservation) => ({
-          id: reservation.id,
-          eventName: reservation.eventName,
-          eventDate: new Date(reservation.eventDate).toLocaleDateString(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-          status: reservation.status || 'N/A',
-        }))
-      );
-    } else {
-      setFilteredRows(
-        reservations.map((reservation) => ({
-          id: reservation.id,
-          eventName: reservation.eventName,
-          eventDate: new Date(reservation.eventDate).toLocaleDateString(),
-          startTime: reservation.startTime,
-          endTime: reservation.endTime,
-          status: reservation.status || 'N/A',
-        }))
+        eventData.data
+          .filter((reservation: any) =>
+            reservation.eventName.toLowerCase().includes(query.toLowerCase())
+          )
+          .map((reservation: any) => ({
+            id: reservation.id,
+            eventName: reservation.eventName,
+            eventDate: new Date(reservation.eventDate).toLocaleDateString(),
+            startTime: reservation.startTime,
+            endTime: reservation.endTime,
+            status: reservation.status || 'N/A',
+          }))
       );
     }
   };
 
   return (
     <div>
-      <SearchBox />
+      <SearchBox onSearch={handleSearch} />
       <Box
         sx={{
           height: 400,

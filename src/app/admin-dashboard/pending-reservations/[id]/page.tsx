@@ -4,6 +4,8 @@ import MiniDrawer from "@/app/components/admin-dashboard/side-nav/sidenav";
 import Box from "@mui/material/Box";
 import ProfileStats from "@/app/components/admin-dashboard/profile-stats/stat";
 import PendingInformationForm from "@/app/components/admin-dashboard/pending-events/pending-info/pending-info";
+import { useGetUserByIdQuery } from "../../../../../redux/features/auth/userApi";
+import { CircularProgress } from "@mui/material";
 
 const Page: React.FC = ({ params }: any) => {
   const [userId, setUserId] = useState<number>(0);
@@ -16,11 +18,15 @@ const Page: React.FC = ({ params }: any) => {
       console.log(parsedUser?.id);
     }
   }, []);
+  const { data: user, isLoading, isError, error } = useGetUserByIdQuery(userId, {
+    skip: userId === 0,
+  });
 
+  if (isLoading) return <CircularProgress />;
 
   return (
     <Box sx={{ display: "flex" }}>
-      <MiniDrawer childTitle="Pending Reservations" />
+      <MiniDrawer childTitle="Pending Reservations" user={user}/>
       <Box
         component="main"
         sx={{
@@ -32,8 +38,8 @@ const Page: React.FC = ({ params }: any) => {
           },
         }}
       >
-        <ProfileStats/>
-        <PendingInformationForm/>
+        <ProfileStats eventId={params.id}/>
+        <PendingInformationForm eventId={params.id}/>
       </Box>
     </Box>
   );

@@ -1,6 +1,7 @@
 'use client';
 import './booking-form.css';
 import * as React from 'react';
+import { useRouter } from 'next/navigation';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,16 +9,60 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
+import { useCreateEventMutation } from '../../../../redux/features/auth/eventApi'; 
+import { useDispatch } from 'react-redux';
+import { userLoggedOut } from '../../../../redux/features/auth/authSlice'; 
+import toast from 'react-hot-toast';
 
 const defaultTheme = createTheme();
 
-export default function BookingForm() {
+const BookingForm = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const [createEvent, { isSuccess, isError, error }] = useCreateEventMutation();
+
+  // Form state
+  const [eventName, setEventName] = React.useState('');
+  const [eventDescription, setEventDescription] = React.useState('');
+  const [eventDate, setEventDate] = React.useState<Dayjs | null>(dayjs());
+  const [startTime, setStartTime] = React.useState<Dayjs | null>(dayjs());
+  const [endTime, setEndTime] = React.useState<Dayjs | null>(dayjs());
+
+  const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    const eventData = {
+      eventName,
+      eventDate: eventDate?.format('YYYY-MM-DD'),
+      startTime: startTime?.format('HH:mm'),
+      endTime: endTime?.format('HH:mm'),
+      userId,
+    };
+
+    try {
+      await createEvent(eventData).unwrap();
+      if (isSuccess) {
+        toast.success("Event created successfully")
+        dispatch(userLoggedOut());
+        router.push('/');
+      }
+      if (isError) {
+        if ("data" in error) {
+          const errorData = error as any || "Event created error";
+          toast.error(errorData?.data?.message);
+        }
+      }
+    } catch (err) {
+      console.error('Failed to create event:', err);
+    }
+  };
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="sm">
@@ -30,50 +75,35 @@ export default function BookingForm() {
             alignItems: 'center',
           }}
         >
-          <Typography className='topic'>
-            Make Your Reservation
-          </Typography>
-          <br/>
+          <Typography className="topic">Make Your Reservation</Typography>
+          <br />
           <Box
-            className='box-outer'
+            className="box-outer"
             component="form"
             noValidate
+            onSubmit={handleSubmit}
             sx={{
               mt: 3,
-              p: 3, 
-              border: '1px solid #ccc', 
-              borderRadius: 2, 
-              boxShadow: 3, 
-              width: '100%', 
+              p: 3,
+              border: '1px solid #ccc',
+              borderRadius: 2,
+              boxShadow: 3,
+              width: '100%',
             }}
           >
-            <TextField className='text-field'
-              margin="normal"
-              required
-              fullWidth
-              id="name"
-              label="Name of the Requestor"
-              name="name"
-              autoComplete="current-name"
-              autoFocus
-            />
-            <TextField className='text-field'
-              margin="normal"
-              required
-              fullWidth
-              id="position"
-              label="Position"
-              name="position"
-            />
-            <TextField className='text-field'
+            <TextField
+              className="text-field"
               margin="normal"
               required
               fullWidth
               id="event"
               label="Event Name"
               name="event"
+              value={eventName}
+              onChange={(e) => setEventName(e.target.value)}
             />
-            <TextField className='text-field'
+            <TextField
+              className="text-field"
               margin="normal"
               required
               fullWidth
@@ -81,32 +111,40 @@ export default function BookingForm() {
               label="Event Description"
               name="event-des"
               multiline
-              rows={5} 
+              rows={5}
+              value={eventDescription}
+              onChange={(e) => setEventDescription(e.target.value)}
             />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DemoContainer components={['DatePicker']}>
-                <Typography variant="subtitle1" marginTop={1} className='topics' >
-                  Select Event Date
-                </Typography>
-                <DemoItem>
-                  <DatePicker defaultValue={dayjs('2022-04-17')} className='text-field' />
-                </DemoItem>
-              </DemoContainer>
+              <Typography variant="subtitle1" marginTop={1} className="topics">
+                Select Event Date
+              </Typography>
+              <DatePicker
+                value={eventDate}
+                onChange={(newValue) => setEventDate(newValue)}
+                className="text-field"
+              />
             </LocalizationProvider>
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography variant="subtitle1" marginTop={1} className='topics' >
+              <Typography variant="subtitle1" marginTop={1} className="topics">
                 Select Event Times
               </Typography>
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center' }}>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={['TimePicker']}>
-                    <TimePicker label="Start Time" className='text-field' />
-                  </DemoContainer>
+                  <TimePicker
+                    label="Start Time"
+                    value={startTime}
+                    onChange={(newValue) => setStartTime(newValue)}
+                    className="text-field"
+                  />
                 </LocalizationProvider>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer components={['TimePicker']}>
-                    <TimePicker label="End Time" className='text-field' />
-                  </DemoContainer>
+                  <TimePicker
+                    label="End Time"
+                    value={endTime}
+                    onChange={(newValue) => setEndTime(newValue)}
+                    className="text-field"
+                  />
                 </LocalizationProvider>
               </Box>
             </Box>
@@ -124,4 +162,6 @@ export default function BookingForm() {
       </Container>
     </ThemeProvider>
   );
-}
+};
+
+export default BookingForm;
