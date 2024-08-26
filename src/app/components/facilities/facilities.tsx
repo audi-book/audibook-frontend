@@ -1,78 +1,109 @@
 // Facilities.tsx
 'use client';
-import React from 'react';
-import './Facilities.css';
-import { Box, Grid, Typography } from '@mui/material';
+import * as React from 'react';
+import './facilities.css';
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+import ImageListItemBar from '@mui/material/ImageListItemBar';
+import ListSubheader from '@mui/material/ListSubheader';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
 
-const facilities = [
+export default function TitlebarImageList() {
+  return (
+    <div className="imageListContainer">
+      <ImageList className="imageList" sx={{ width: '100%', height: 'auto' }}>
+    
+      <ImageListItem key="Subheader" cols={2}>
+        <ListSubheader className="listSubheader" component="div">Facilities provided by Our Auditorium </ListSubheader>
+      </ImageListItem>
+      {itemData.map((item) => (
+        <ImageListItem key={item.img} className="imageListItem">
+          <img
+            srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+            src={`${item.img}?w=248&fit=crop&auto=format`}
+            alt={item.title}
+            loading="lazy"
+          />
+          <ImageListItemBar
+            className="imageListItemBar"
+            title={item.title}
+            subtitle={item.description}
+            actionIcon={
+              <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                aria-label={`info about ${item.title}`}
+              >
+                <InfoIcon />
+              </IconButton>
+            }
+            sx={{
+              title: {
+                fontSize: '1.5rem', 
+                fontWeight: 'bold', 
+              },
+              subtitle: {
+                fontSize: '1rem', 
+                whiteSpace: 'normal', 
+                  overflow: 'visible', 
+              },
+            }}
+          />
+        </ImageListItem>
+      ))}
+    </ImageList></div>
+  );
+}
+
+
+const itemData = [
+
   {
-    name: 'High-Quality Sound System',
-    description: 'Our auditorium is equipped with a state-of-the-art sound system that ensures clear and powerful audio for any event.',
-    image: '/images/sound.jpg',
-  },
-  {
-    name: 'Modern Lighting',
-    description: 'The auditorium features modern lighting that can be adjusted to suit the mood and needs of any event.',
-    image: '/images/lighting.jpg',
-  },
-  {
-    name: 'Spacious Seating',
+    img: '/images/seating.jpg',
+    title: 'Spacious Seating',
     description: 'With a capacity to seat over 500 people, our auditorium provides comfortable and spacious seating arrangements.',
-    image: '/images/seating.jpg',
-
-  },
-
-  {
-    name: 'Spacious Stage',
-    description: 'A large, well-equipped stage suitable for performances, presentations, and ceremonies, often with curtains, wings, and backstage access.',
-    image: '/images/stage.jpg',
   },
   {
-    name: 'Dressing Rooms',
+    img: '/images/stage.jpg',
+    title: 'Spacious Stage',
+    description: 'A large, well-equipped stage suitable for performances, presentations, and ceremonies, often with curtains, and backstage.',
+    rows: 2,
+    cols: 3,
+    featured: true,
+  },
+  
+  
+  {
+    img: '/images/sound.jpg',
+    title: 'High-Quality Sound System',
+    description: 'Our auditorium is equipped with a state-of-the-art sound system that ensures clear and powerful audio for any event.',
+    rows: 2,
+    cols: 2,
+    featured: true,
+  },
+  {
+    img: '/images/lighting.jpg',
+    title: 'Modern Lighting',
+    description: 'The auditorium features modern lighting that can be adjusted to suit the mood and needs of any event.',
+  },
+  
+ 
+  {
+    img: '/images/Dressing.jpg',
+    title: 'Dressing Rooms',
     description: 'Private rooms behind or near the stage for performers to prepare, rest, and store costumes and props before and during events.',
-    image: '/images/Dressing.jpg',
+    cols: 2,
   },
   {
-    name: 'Control Room',
-    description: 'A dedicated area for managing sound, lighting, and video equipment, often located at the back of the auditorium for optimal viewing and control.',
-    image: '/images/control.jpg',
+    img: '/images/control.jpg',
+    title: 'Control Room',
+    description: 'A dedicated area for managing sound, lighting, and video equipment, located at the back of the auditorium for viewing and control.',
+    rows: 2,
+    cols: 2,
+    featured: true,
   },
+  
 ];
 
-const Facilities: React.FC = () => {
-  return (
-    <Box className="facilities-container">
-      <Typography variant="h4" className="facilities-title">
-        Facilities Provided by Our Auditorium
-      </Typography>
-      <Grid container spacing={4} className="facilities-grid">
-        {facilities.map((facility, index) => (
-          <Grid
-            container
-            item
-            xs={12}
-            sm={12}
-            md={12}
-            key={index}
-            className={`facility-item ${index % 2 === 0 ? 'left-image' : 'right-image'}`}
-            alignItems="center"
-          >
-            <Grid item xs={12} sm={6} className="facility-image-container">
-              <img src={facility.image} alt={facility.name} className="facility-image" />
-            </Grid>
-            <Grid item xs={12} sm={6} className="facility-description-container">
-              <Typography variant="h5" className="facility-name">
-                {facility.name}
-              </Typography>
-              <Typography variant="body1" className="facility-description">
-                {facility.description}
-              </Typography>
-            </Grid>
-          </Grid>
-        ))}
-      </Grid>
-    </Box>
-  );
-};
 
-export default Facilities;
+
