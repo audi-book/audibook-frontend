@@ -1,0 +1,71 @@
+/* Facilities.css */
+
+.imageListContainer {
+  width: 100%;
+  /* Decrease height to make space for the footer */
+  height: '100vh'; /* Adjust 100px based on the footer's height */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Changed from center to flex-start */
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+.imageListItem {
+  border-radius: 8px;
+  overflow: hidden;
+  position: relative;
+  width: '100%'; /* Adjust the width as needed */
+  transition: transform 0.3s ease;
+}
+.imageListItem:hover {
+  transform: scale(0.95); /* Scale up the image slightly on hover */
+}
+
+.imageListItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease; /* Smooth transition for image opacity */
+}
+.imageListItem:hover img {
+  opacity: 0.8; /* Slightly dim the image on hover */
+}
+
+.imageListItemBar {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.listSubheader {
+  font-size: 30px;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: #b52525;
+  text-align: center; /* Center text */
+  width: 100%; /* Make sure the container is full width */
+}
+
+.imageListItemBar .MuiImageListItemBar-title {
+  font-size: 12pt; /* Adjust title size here */
+  font-weight: bold; /* Optional: Make title bold */
+}
+
+
+.MuiImageListItemBar-subtitle {
+  font-size: 11pt; /* Ensure this matches your desired size */
+  white-space: normal; /* Allows text to wrap */
+  overflow: visible; /* Ensures text is not clipped */
+}
+
+.imageList {
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+  flex-grow: 1; /* Ensure it takes available space */
+}

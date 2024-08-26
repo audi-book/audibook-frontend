@@ -1,0 +1,42 @@
+.navbar{
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1100; 
+    background-color: var(--brown) !important;
+}
+
+.navbar a {
+    text-decoration: none;
+}
+  
+.navbar a:hover {
+    text-decoration: none; 
+}
+  
+.navbtn{
+    background-color: var(--yellow) !important;
+    color: var(--brown) !important;
+    font-weight: bolder !important;
+    border-radius: 20px !important;
+    padding-top: 10px !important;
+}
+
+.MuiDrawer-paper {
+    background-color: var(--brown) !important;
+    height: 100%; 
+}
+
+.MuiDrawer-paper a {
+    text-decoration: none !important; 
+}
+  
+
+.MuiListItemButton-root {
+    text-decoration: none !important;
+}
+  
+.MuiDrawer-paper a:hover {
+    text-decoration: none !important;
+}
