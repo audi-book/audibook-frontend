@@ -33,7 +33,16 @@ const BookingForm = () => {
   const [startTime, setStartTime] = React.useState<Dayjs | null>(dayjs());
   const [endTime, setEndTime] = React.useState<Dayjs | null>(dayjs());
 
-  const userId = JSON.parse(localStorage.getItem('user') || '{}').id;
+  const [userId, setUserId] = React.useState<number | null>(null);
+
+  React.useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      const parsedUser = JSON.parse(storedUser);
+      setUserId(parsedUser?.id);
+    }
+  }, []);
+
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
