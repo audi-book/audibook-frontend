@@ -41,7 +41,7 @@ const Footer: React.FC = () => {
           >
             The AudiBook at the Faculty of Technology, University of Sri Jayewardenepura, 
             is designed to streamline the process of reserving our state-of-the-art facilities. 
-            Whether you're planning a lecture, seminar, special event, or community gathering, our platform ensures 
+            Whether you&apos;re planning a lecture, seminar, special event, or community gathering, our platform ensures 
             a hassle-free booking experience. We proudly offer our auditorium not only to faculty members and students but
             also to external parties, supporting both academic and cultural activities within and beyond our university community.
           </Typography>
