@@ -32,22 +32,28 @@ const BookingForm = () => {
   const [eventDate, setEventDate] = React.useState<Dayjs | null>(dayjs());
   const [startTime, setStartTime] = React.useState<Dayjs | null>(dayjs());
   const [endTime, setEndTime] = React.useState<Dayjs | null>(dayjs());
-
-  const [userId, setUserId] = React.useState<number | null>(null);
+  
+  const [userId, setUserId] = React.useState<string | null>(null);
 
   React.useEffect(() => {
-    const storedUser = localStorage.getItem("user");
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      setUserId(parsedUser?.id);
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.id) {
+      setUserId(user.id);
     }
   }, []);
 
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
+
+    if (!userId) {
+      toast.error('User not logged in');
+      return;
+    }
+
     const eventData = {
       eventName,
+      eventDescription,
       eventDate: eventDate?.format('YYYY-MM-DD'),
       startTime: startTime?.format('HH:mm'),
       endTime: endTime?.format('HH:mm'),
@@ -56,21 +62,23 @@ const BookingForm = () => {
 
     try {
       await createEvent(eventData).unwrap();
-      if (isSuccess) {
-        toast.success("Event created successfully")
-        dispatch(userLoggedOut());
-        router.push('/');
-      }
-      if (isError) {
-        if ("data" in error) {
-          const errorData = error as any || "Event created error";
-          toast.error(errorData?.data?.message);
-        }
-      }
     } catch (err) {
       console.error('Failed to create event:', err);
     }
   };
+  React.useEffect(() => {
+    if (isSuccess) {
+      toast.success("Event created successfully");
+      dispatch(userLoggedOut());
+      router.push('/');
+    }
+    if (isError) {
+      if ("data" in error) {
+        const errorData = error as any || "Event creation error";
+        toast.error(errorData?.data?.message);
+      }
+    }
+  }, [isSuccess,isError,error]);
 
   return (
     <ThemeProvider theme={defaultTheme}>
