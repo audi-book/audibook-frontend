@@ -42,6 +42,7 @@ const BookingForm = () => {
     }
   }, []);
 
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 

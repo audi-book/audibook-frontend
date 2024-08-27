@@ -81,9 +81,8 @@ const AboutUs: React.FC = () => {
         Get in Touch
       </Typography>
       <Typography variant="body1">
-        We are here to support you every step of the way. If you have any
-        questions or need assistance with your booking, please don&apos;t
-        hesitate to contact us.
+
+        We are here to support you every step of the way. If you have any questions or need assistance with your booking, please don&apos;t hesitate to contact us.
       </Typography>
     </Container>
   );
